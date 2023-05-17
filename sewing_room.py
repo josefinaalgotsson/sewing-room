@@ -14,7 +14,7 @@ class Fabric():
         else:
             print('Not enough fabric!')
     
-    def addfabric(self,amount):
+    def add_fabric(self,amount):
         amount = Pattern.to_amount(amount)
         self.length +=amount
         self.show_length()
@@ -70,42 +70,40 @@ class Garment():
     def __add__(self, other):
         return self.amount + other.amount
     
-    def showcost(self):
+    def show_cost(self):
         print(f'Garment cost is {self.cost} kr.')
 
         
 # Fabric Inventory
 sheetfabric = Fabric(1.4, 5, 'weave','light',50)
-flowerfabric = Fabric(1.4, 3, 'weave','medium',150)
+flowerfabric = Fabric(1.4, 3, 'knit','medium',150)
 print('Showing original length')
 sheetfabric.show_length()
 
 # Pattern inventory
-cribsheet_pattern = Pattern('linens',{1: 0.92})
+Cribsheet = Pattern('linens',{1: 0.92})
 Miette = Pattern('skirt',{1:2, 2:2,3:2,4:2,5:2,6:2,7:2.7,8:2.7 },115,'Tilly')
 
 # Garments / Projects
-sheet = Garment(cribsheet_pattern,1,sheetfabric)
-sheet2 = Garment(cribsheet_pattern,1,sheetfabric)
-sheet3 = Garment(cribsheet_pattern,1,flowerfabric)
+sheet = Garment(Cribsheet,1,sheetfabric)
+sheet2 = Garment(Cribsheet,1,sheetfabric)
+sheet3 = Garment(Cribsheet,1,flowerfabric)
 
 # Actions
 print('cutting cribsheet')
 sheetfabric.cut(sheet)
 print('Changed my mind, adding back garment')
-sheetfabric.addfabric(sheet)
+sheetfabric.add_fabric(sheet)
 print('buying more fabric')
-sheetfabric.addfabric(2)
+sheetfabric.add_fabric(2)
 print('cutting fabric for two sheets at once')
 sheetfabric.cut(sheet+sheet2)
-print('cutting out sheet with cut')
-sheetfabric.cut(sheet)
 print('cutting out 3 m with cut')
 sheetfabric.cut(3)
 print('sheet cost')
 print(sheet.cost)
 print('sheet cost')
-sheet3.showcost()
+sheet3.show_cost()
 print('flower fabric rate')
 flowerfabric.show_rate()
 print()
