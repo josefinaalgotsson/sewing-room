@@ -41,6 +41,24 @@ class Pattern():
         elif isinstance(thing, Garment):
             return thing.amount
         
+    @staticmethod
+    def knit_circle_skirt(waist,length,seamallowance):
+        waistradius = waist/(2*3.14) - seamallowance
+        skirtradius = waistradius + seamallowance + length
+        waistband = waist + 2*seamallowance
+        return waistradius, skirtradius, waistband
+    
+    @staticmethod
+    def threepart_circle_skirt(waist,length,seamallowance):
+        waistradius = (4*seamallowance + waist)/(2*3.14) - seamallowance
+        waistradius2 = (8*seamallowance+ waist)/(2*3.14) - seamallowance
+        skirtradius = waistradius + seamallowance + length
+        skirtradius2 = waistradius2 + seamallowance + length
+        waistband = waist/2 + 2*seamallowance
+        waistband2 = waist/4+2*seamallowance
+        return waistradius, waistradius2, skirtradius, skirtradius2, waistband, waistband2     
+        
+        
 class Garment():
     def __init__(self,pattern,size,fabric=None):
         self.pattern = pattern
@@ -89,3 +107,17 @@ print('sheet cost')
 sheet3.showcost()
 print('flower fabric rate')
 flowerfabric.show_rate()
+print()
+
+w,l,wb = Pattern.knit_circle_skirt(0.8,1.3,0.015)
+print(w)
+print(l)
+print(wb)
+print()
+w,w2,l,l2,wb, wb2 = Pattern.threepart_circle_skirt(0.8,1.3,0.015)
+print(w)
+print(w2)
+print(l)
+print(l2)
+print(wb)
+print(wb2)
