@@ -19,7 +19,7 @@ class Fabric():
         self.show_length()
             
     def show_length(self):
-        print(f'You have {self.length} meters fabric left')
+        print(f'You have {round(self.length,2)} meters fabric left')
         
             
 class Pattern():
