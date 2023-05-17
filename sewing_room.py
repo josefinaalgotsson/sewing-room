@@ -4,32 +4,24 @@ class Fabric():
         self.length = length
         self.weave = weavetype
         self.thickness = thickness
-        
-    def cutgarment(self,garment):
-        if self.length > garment.garmentamount:
-            self.length -= garment.garmentamount
-            self.show_length()
-        else:
-            print('Not enough fabric!')
-    
-    def cutfabric(self,amount):
+            
+    def cut(self,amount):
+        amount = Pattern.to_amount(amount)
         if self.length > amount:
             self.length -= amount
             self.show_length()
         else:
             print('Not enough fabric!')
-            
-    def addgarment(self,garment):
-        self.length += garment.garmentamount
-        self.show_length()
     
     def addfabric(self,amount):
+        amount = Pattern.to_amount(amount)
         self.length +=amount
         self.show_length()
             
     def show_length(self):
         print(f'You have {self.length} meters fabric left')
         
+            
 class Pattern():
     def __init__(self, garmenttype, garmentamount):
         self.garmenttype = garmenttype
@@ -37,7 +29,15 @@ class Pattern():
         
     def __add__(self, other):
         return self.garmentamount + other.garmentamount
+    
+    @staticmethod
+    def to_amount(thing):
+        if isinstance(thing, float) or isinstance(thing, int):
+            return thing
+        elif isinstance(thing, Pattern):
+            return thing.garmentamount
         
+  
         
 # Inventory
 sheetfabric = Fabric(1.4, 5, 'weave','light')
@@ -51,10 +51,14 @@ babysheet3 = Pattern('linens',0.92)
 
 # Actions
 print('cutting babysheet')
-sheetfabric.cutgarment(babysheet)
-print('Changed my mind, adding back garment')
-sheetfabric.addgarment(babysheet)
+sheetfabric.cut(babysheet)
+print('Changed my mind, adding back Pattern')
+sheetfabric.addfabric(babysheet)
 print('buying more fabric')
 sheetfabric.addfabric(2)
 print('cutting fabric for two sheets at once')
-sheetfabric.cutfabric(babysheet+babysheet2)
+sheetfabric.cut(babysheet+babysheet2)
+print('cutting babysheet with cut')
+sheetfabric.cut(babysheet)
+print('cutting 3 with cut')
+sheetfabric.cut(3)
