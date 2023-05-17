@@ -1,9 +1,10 @@
 class Fabric():
-    def __init__(self, width, length, weavetype, thickness):
+    def __init__(self, width, length, weavetype, thickness, rate):
         self.width = width
         self.length = length
         self.weave = weavetype
         self.thickness = thickness
+        self.rate = rate
             
     def cut(self,amount):
         amount = Pattern.to_amount(amount)
@@ -21,44 +22,70 @@ class Fabric():
     def show_length(self):
         print(f'You have {round(self.length,2)} meters fabric left')
         
+    def show_rate(self):
+        print(f'Fabric costs {self.rate} kr/m')
+        
             
 class Pattern():
-    def __init__(self, garmenttype, garmentamount):
+    def __init__(self, garmenttype, sizes, cost=0, label=None, store=None):
         self.garmenttype = garmenttype
-        self.garmentamount = garmentamount
-        
-    def __add__(self, other):
-        return self.garmentamount + other.garmentamount
+        self.sizes = sizes
+        self.cost = cost
+        self.label = label
+        self.store = store
     
     @staticmethod
     def to_amount(thing):
         if isinstance(thing, float) or isinstance(thing, int):
             return thing
-        elif isinstance(thing, Pattern):
-            return thing.garmentamount
+        elif isinstance(thing, Garment):
+            return thing.amount
         
-  
+class Garment():
+    def __init__(self,pattern,size,fabric=None):
+        self.pattern = pattern
+        self.size = size
+        self.fabric = fabric
+        self.amount = pattern.sizes[size]
+        self.cost = self.amount * fabric.rate
         
-# Inventory
-sheetfabric = Fabric(1.4, 5, 'weave','light')
+    def __add__(self, other):
+        return self.amount + other.amount
+    
+    def showcost(self):
+        print(f'Garment cost is {self.cost} kr.')
+
+        
+# Fabric Inventory
+sheetfabric = Fabric(1.4, 5, 'weave','light',50)
+flowerfabric = Fabric(1.4, 3, 'weave','medium',150)
 print('Showing original length')
 sheetfabric.show_length()
 
+# Pattern inventory
+cribsheet_pattern = Pattern('linens',{1: 0.92})
+
 # Garments / Projects
-babysheet = Pattern('linens',0.92)
-babysheet2 = Pattern('linens',0.92)
-babysheet3 = Pattern('linens',0.92)
+sheet = Garment(cribsheet_pattern,1,sheetfabric)
+sheet2 = Garment(cribsheet_pattern,1,sheetfabric)
+sheet3 = Garment(cribsheet_pattern,1,flowerfabric)
 
 # Actions
-print('cutting babysheet')
-sheetfabric.cut(babysheet)
-print('Changed my mind, adding back Pattern')
-sheetfabric.addfabric(babysheet)
+print('cutting cribsheet')
+sheetfabric.cut(sheet)
+print('Changed my mind, adding back garment')
+sheetfabric.addfabric(sheet)
 print('buying more fabric')
 sheetfabric.addfabric(2)
 print('cutting fabric for two sheets at once')
-sheetfabric.cut(babysheet+babysheet2)
-print('cutting babysheet with cut')
-sheetfabric.cut(babysheet)
-print('cutting 3 with cut')
+sheetfabric.cut(sheet+sheet2)
+print('cutting out sheet with cut')
+sheetfabric.cut(sheet)
+print('cutting out 3 m with cut')
 sheetfabric.cut(3)
+print('sheet cost')
+print(sheet.cost)
+print('sheet cost')
+sheet3.showcost()
+print('flower fabric rate')
+flowerfabric.show_rate()
