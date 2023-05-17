@@ -82,6 +82,7 @@ sheetfabric.show_length()
 
 # Pattern inventory
 cribsheet_pattern = Pattern('linens',{1: 0.92})
+Miette = Pattern('skirt',{1:2, 2:2,3:2,4:2,5:2,6:2,7:2.7,8:2.7 },115,'Tilly')
 
 # Garments / Projects
 sheet = Garment(cribsheet_pattern,1,sheetfabric)
